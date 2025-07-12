@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> DOM_rps </title>
+
+        <style>
+            body{
+                background-color: rgb(33, 33, 33);
+            }
+            p{
+                color: white;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+            .hyperlink{
+                color: white;
+            }
+            .rock-img,.paper-img,.scissor-img{
+                height: 50px;
+                background-color:transparent;
+                cursor: pointer;
+                border: 3px white solid;
+                border-radius: 60px;
+                padding: 35px 35px;
+                
+            }
+            button {
+                background: transparent;
+                border: none;
+                padding: 0;
+                margin: 0 10px;
+                margin-bottom: 30px;
+            }
+            .reset_btn{
+                background-color: white;
+                color: black;
+                padding: 10px 15px;
+                cursor: pointer;
+                font-size: medium;
+                font-weight: 400;
+            }
+            .p1{
+                font-size:x-large;
+                font-weight: bold;
+                margin-bottom: 30px;
+            }
+            .p3{
+                margin-top: 50px;
+                font-weight: 500;
+            }
+            .imgclass{
+                height:50px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <p style="font-size:xx-large;font-weight: bold;" class="main-p">
+            Rock Paper Scissors
+        </p>
+
+        <button class="rock_btn" onclick="Process('rock')">
+            <img src="RPS emojis/rock-img.png" class="rock-img">
+        </button>
+        <button class="paper_btn"  onclick="Process('paper')">
+            <img src="RPS emojis/paper-img.png" class="paper-img">
+        </button>
+        <button class="scissor_btn" onclick="Process('scissors')">
+            <img src="RPS emojis/scissors-img.png" class="scissor-img">
+        </button>
+        
+        <p class="p1"></p>
+        <p class="p2"></p>
+        <p class="p3"></p>
+        
+        <script>
+
+            let score=JSON.parse(localStorage.getItem('score'));
+            if(!score){  // if(score === null)
+                score={
+                    win:0,
+                    lose:0,
+                    tie:0
+                };
+            }
+
+            updateScore();
+
+            function updateScore(){
+                document.querySelector('.p3').innerHTML=`Win: ${score.win} , Lose: ${score.lose} , Tie: ${score.tie}`;
+            }
+
+            function computerMove(){  //user defined function
+                const RC=Math.random();
+
+                if(RC>=0 && RC<(1/3)){
+                    return 'rock';
+                }else if(RC>=(1/3) && RC<(2/3)){
+                    return 'paper';
+                }else if(RC>=(2/3) && RC<1){
+                    return 'scissors';
+                }
+            }
+
+            function Process(playerMove){
+                let compMove=computerMove();
+                console.log(`computer pcked ${compMove}`);
+
+                let result='';
+
+                if(playerMove === compMove){
+                    result='tie.';
+                }else if((playerMove==='rock' && compMove==='paper') || (playerMove==='paper' && compMove==='scissors') || (playerMove==='scissors' && compMove==='rock')){
+                    result='you lose :( ';
+                }else{
+                    result='you win :D ';
+                }
+                
+                if(result==='you win :D '){
+                    score.win++;
+                }else if(result==='you lose :( '){
+                    score.lose++;
+                }else if(result==='tie.'){
+                    score.tie++;
+                }
+
+                document.querySelector('.p2').innerHTML=`You <img src='RPS emojis/${playerMove}-img.png' class='imgclass'>   <img src='RPS emojis/${compMove}-img.png' class='imgclass'> Computer`;
+                document.querySelector('.p1').innerHTML=`${result}`;
+
+                localStorage.setItem('score',JSON.stringify(score));
+
+                updateScore();
+            }
+
+            
+        </script>
+
+        <button class="reset_btn" onclick="
+        score.win=0;
+        score.lose=0;
+        score.tie=0;
+        localStorage.setItem('score',JSON.stringify(score));  //if this isn't there then reset won't be save in local storage and old scores will be back after refresh
+        updateScore();
+        ">
+            Reset Score
+        </button>
+        <br>
+        <br>
+        
+        <a href="http://127.0.0.1:5500/DOMass.html" class="hyperlink">go back</a>
+    </body>
+</html>

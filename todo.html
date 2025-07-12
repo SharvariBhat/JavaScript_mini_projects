@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ToDo list</title>
+        <style>
+            .p2{
+                display: grid;
+                grid-template-columns: 175px 120px 50px;
+            }
+        </style>
+    </head>
+    <body>
+        <p class="p1">
+            To-Do List 1
+        </p>
+
+        <input placeholder="enter task" class="i1">
+
+        <input type="date" class="i2">
+
+        <button class="btn1" onclick="addTask();">
+            Add
+        </button>
+
+        <br>
+
+
+
+        <div class="p2"> </div>
+
+        <script>
+            
+            let alist;
+
+            try {
+                const data = localStorage.getItem('list');
+                alist = data ? JSON.parse(data) : [];
+            } catch (e) {
+                console.warn("Invalid JSON in localStorage. Resetting list.");
+                alist = [];
+                localStorage.removeItem('list'); // wipe the bad data
+            }
+
+            render();
+
+            function addTask(){
+                let a=document.querySelector('.i1');
+                let b=a.value.trim();
+
+                let c=document.querySelector('.i2');
+                let d=c.value;
+
+                if(b==='') return;  //ignore empty task
+                alist.push({task: b,date: d});
+                a.value = ''; //reset the placeholder
+                c.value = '';
+                render();
+            }
+
+            function render(){
+                let html='';
+                for(let i=0;i<alist.length;i++){
+                    const {task,date}=alist[i];
+                    html += `${i + 1}: ${task} <small>${date}</small> <button class="btn2" onclick="del(${i})">Delete</button> <br>`; // generate HTML
+                }
+                
+                document.querySelector('.p2').innerHTML=html;
+                localStorage.setItem('list',JSON.stringify(alist));
+            }
+
+            function del(index){
+                alist.splice(index,1);
+                render();  //updates the generated html
+            }
+        </script>
+    </body>
+</html>

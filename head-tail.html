@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Head or Tail</title>
+        <style>
+            *{
+                box-sizing:border-box;
+                box-shadow: #4e54c8;
+            }
+            body{
+                background: linear-gradient(to right, #4e54c8, #8f94fb);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                margin: 0;
+            }
+            .div1{
+                color:darkblue;
+                font-size: 40px;
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: bold;
+                margin: auto;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+            }
+            .div1:hover{
+                color: rgb(249, 222, 155);
+                transition: color 0.3s ease;
+                box-shadow: #eff0ff;
+            }
+            button{
+                background-color:rgb(181, 255, 255);
+                color: rgba(120, 10, 10, 0.56);
+                margin: 30px;
+                border: rgba(120, 10, 10, 0.864) solid 3px;
+                border-radius: 15px;
+                cursor: pointer;
+                padding: 20px 30px;
+                font-weight: bold;
+                font-size: x-large;
+            }
+            .p1{
+                font-size: x-large;
+                font-family: Arial, Helvetica, sans-serif;
+                font-weight: bold;
+                color:indigo;
+                margin-bottom: 30px;
+            }
+            .p2,.p3{
+                font-family: Arial, Helvetica, sans-serif;
+                color: indigo;
+                margin-bottom: 30px;
+            }
+            .head-btn:hover,.tail-btn:hover,.reset-btn:hover{
+                transform: scale(1.2);
+                transition: transform 0.3s ease;
+                box-shadow: 0 0 15px#4e54c8;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id="heading" class="div1">Head or Tail? Which do you choose?</div>
+
+        <button class="head-btn" onclick="choice('Head')">Head</button>
+
+        <button class="tail-btn" onclick="choice('Tail')">Tail</button> 
+
+        <br><br>
+
+        <button class="reset-btn" onclick="reset();">Reset Score</button>
+
+        <p class="p1"> </p>
+        <p class="p2"> </p>
+        <p class="p3"> </p>
+
+        <script>
+
+            let score=JSON.parse(localStorage.getItem('score'));  // stored values will show when refreshed, if it was null then ->
+            if(!score){
+                score={
+                    win:0,
+                    lose:0
+                };
+            }
+
+            displayScore();
+
+            function choice(playerChoice){
+                const compChoice=Math.random();
+                let result='';
+                if(compChoice>=0 && compChoice<(1/2)){
+                    result='Head';
+                }else if(compChoice>=(1/2) && compChoice<1){
+                    result='Tail';
+                }
+
+                const a=document.querySelector('.p1');
+                let b=a.innerHTML;
+
+                if(result===playerChoice){
+                    b='you win';
+                    score.win++;
+                }else{
+                    b='you lose';
+                    score.lose++;
+                }
+                document.querySelector('.p1').innerHTML=b;
+
+                document.querySelector('.p2').innerHTML=`Computer chose ${result} and you chose ${playerChoice}`;
+
+                document.querySelector('.p3').innerHTML=`SCORE: 
+Wins: ${score.win}
+Losses: ${score.lose}`;
+
+                localStorage.setItem('score',JSON.stringify(score));  // storing score in 'score' variable
+            }
+
+            function reset(){
+                score={
+                    win:0,
+                    lose:0
+                };
+                document.querySelector('.p1').innerHTML='';
+                document.querySelector('.p2').innerHTML='';
+                displayScore();
+                localStorage.setItem('score',JSON.stringify(score));
+            }
+
+            function displayScore(){
+                document.querySelector('.p3').innerHTML=`SCORE: 
+Wins: ${score.win}
+Losses: ${score.lose}`;
+            }
+
+        </script>
+    </body>
+</html>
