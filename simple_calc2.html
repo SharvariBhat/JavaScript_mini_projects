@@ -7,15 +7,31 @@
         <style>
             body{
                 background-color: rgb(0, 0, 0);
+                height: 100vh;
+                margin: 0;
             }
             button{
                 margin-bottom: 5px;
                 cursor: pointer;
             }
-            p{
+            .main{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+            }
+            .para{
                 font-family: Arial, Helvetica, sans-serif;
-                font-size: larger;
+                font-size: xx-large;
                 font-weight: bold;
+                color: aliceblue;
+                display: flex;
+                text-align: center;
+                justify-content: center;
+                margin-top: 30px;
+                margin-bottom: 20px;
+                cursor: pointer;
+                transition: transform 0.3s ease,color 0.3s ease;
             }
             .b1{
                 height:60px;
@@ -49,6 +65,17 @@
                 margin-right: 5px;
                 cursor: pointer;
             }
+            .b1:hover{
+                background-color: rgb(42, 42, 42);
+
+            }
+            .b2:hover{
+                background-color: rgb(213, 138, 0);
+            }
+            .para:hover{
+                transform: scale(1.2);
+                color: orange;
+            }
             .div-class{
                 color: white;
                 font-size: xx-large;
@@ -56,34 +83,51 @@
                 font-weight: bold;
                 justify-content: center;
             }
+            .dd{
+                background-color: rgb(0, 0, 0);
+                padding: 30px;
+                border-radius: 15px;
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+                cursor: pointer;
+                transition: transform 0.3s ease;  /* putting this helps to scale when hover in and out */
+            }
+            .dd:hover{
+                transform: scale(1.05);
+                
+            }
         </style>
     </head>
     <body>
-        <div id="result" class="div-class"> </div>
-        <p>
-            Calculator
-        </p>
-        <button onclick="append('1');" class="b1">1</button>
-        <button onclick="append('2');" class="b1">2</button>
-        <button onclick="append('3');" class="b1">3</button>
-        <button onclick="append('+');" class="b2">+</button>
-        <br><br>
-        <button onclick="append('4');" class="b1">4</button>
-        <button onclick="append('5');" class="b1">5</button>
-        <button onclick="append('6');" class="b1">6</button>
-        <button onclick="append('-');" class="b2">-</button>
-        <br><br>
-        <button onclick="append('7');" class="b1">7</button>
-        <button onclick="append('8');" class="b1">8</button>
-        <button onclick="append('9');" class="b1">9</button>
-        <button onclick="append('*');" class="b2">*</button>
-        <br><br>
-        <button onclick="append('0');" class="b1">0</button>
-        <button onclick="append('.');" class="b1">.</button>
-        <button onclick="calculate();" class="b1">=</button>  <!-- eval() evaluates the numbers that are in string format -->
-        <button onclick="append('/');" class="b2">/</button>
-        <br><br>
-        <button onclick="clears();" class="b1">AC</button>
+        <p class="para">Calculator</p>
+
+        <div class="main">
+            
+            <div id="com" class="dd">
+                <div id="result" class="div-class"> </div>
+                
+                <button onclick="append('1');" class="b1">1</button>
+                <button onclick="append('2');" class="b1">2</button>
+                <button onclick="append('3');" class="b1">3</button>
+                <button onclick="append('+');" class="b2">+</button>
+                <br><br>
+                <button onclick="append('4');" class="b1">4</button>
+                <button onclick="append('5');" class="b1">5</button>
+                <button onclick="append('6');" class="b1">6</button>
+                <button onclick="append('-');" class="b2">-</button>
+                <br><br>
+                <button onclick="append('7');" class="b1">7</button>
+                <button onclick="append('8');" class="b1">8</button>
+                <button onclick="append('9');" class="b1">9</button>
+                <button onclick="append('*');" class="b2">*</button>
+                <br><br>
+                <button onclick="append('0');" class="b1">0</button>
+                <button onclick="append('.');" class="b1">.</button>
+                <button onclick="calculate();" class="b1">=</button>  <!-- eval() evaluates the numbers that are in string format -->
+                <button onclick="append('/');" class="b2">/</button>
+                <br><br>
+                <button onclick="clears();" class="b1">AC</button>
+            </div>
+        </div>
 
         <script>
             let calc=localStorage.getItem('calculation') || '';

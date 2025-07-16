@@ -23,15 +23,18 @@
                 padding: 35px 35px;
                 
             }
-            button {
+            .rock_btn,.paper_btn,.scissor_btn {
                 background: transparent;
                 border: none;
                 padding: 0;
                 margin: 0 10px;
                 margin-bottom: 30px;
             }
-            .reset_btn{
+            .reset_btn,.auto{
                 background-color: white;
+                border:none;
+                border-radius: 5px;
+                margin-right: 5px ;
                 color: black;
                 padding: 10px 15px;
                 cursor: pointer;
@@ -73,6 +76,9 @@
         <p class="p3"></p>
         
         <script>
+
+            let autoPlaying=false;
+            let intervalID;
 
             let score=JSON.parse(localStorage.getItem('score'));
             if(!score){  // if(score === null)
@@ -131,21 +137,59 @@
                 updateScore();
             }
 
+            function autoplay(){
+                const playerMove=computerMove();
+                Process(playerMove);
+            }
+
+            function toggleAuto(){
+                if(!autoPlaying){  // if not autoPlaying
+
+                    intervalID=setInterval(()=>{
+                        autoplay();     
+                    },1000)
+
+                    document.querySelector('.auto').innerHTML='Stop';
+                    autoPlaying=true;
+                }else{
+                    document.querySelector('.auto').innerHTML='Auto Play';
+                    clearInterval(intervalID);
+                    autoPlaying=false;
+                }
+            }
+
+            function reset(){
+                score.win=0;
+                score.lose=0;
+                score.tie=0;
+                localStorage.setItem('score',JSON.stringify(score));  //if this isn't there then reset won't be save in local storage and old scores will be back after refresh
+                updateScore();
+                document.querySelector('.p1').innerHTML='';
+                document.querySelector('.p2').innerHTML='';
+            }
+
+            document.addEventListener('keydown',(event)=>{
+                if(event.key==='a' || event.key==='A'){
+                    toggleAuto();
+                }
+                if(event.key==='Backspace'){
+                    reset();
+                }
+            });
+
             
         </script>
 
-        <button class="reset_btn" onclick="
-        score.win=0;
-        score.lose=0;
-        score.tie=0;
-        localStorage.setItem('score',JSON.stringify(score));  //if this isn't there then reset won't be save in local storage and old scores will be back after refresh
-        updateScore();
-        ">
+        <button class="reset_btn" onclick="reset();">
             Reset Score
         </button>
+
+        <button class="auto" onclick="toggleAuto();">Auto Play</button>  <!-- or .addEventListener('click',toggleAuto); -->
         <br>
         <br>
         
         <a href="http://127.0.0.1:5500/DOMass.html" class="hyperlink">go back</a>
+        <p style="font-size: smaller;"><u>NOTE:</u> <br> you can also press 'a' or 'A' to <b>Auto Play</b> <br> 
+            you can also press 'Backspace' to <b>Reset</b></p>
     </body>
 </html>
